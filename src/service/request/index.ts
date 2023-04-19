@@ -24,22 +24,17 @@ class HYRequest {
     // 每个instance实例都添加拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        // loading/token
-        console.log("全局请求成功的拦截");
         return config;
       },
       (err) => {
-        console.log("全局请求失败的拦截");
         return err;
       }
     );
     this.instance.interceptors.response.use(
       (res) => {
-        console.log("全局响应成功的拦截");
         return res.data;
       },
       (err) => {
-        console.log("全局响应失败的拦截");
         return err;
       }
     );
