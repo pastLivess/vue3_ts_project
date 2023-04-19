@@ -5,13 +5,13 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "ignoreDeprecations": "5.0"
   },
 
   "references": [
     {
       "path": "./tsconfig.config.json"
     }
-  ],
-  "ignoreDeprecations": "5.0.2"
+  ]
 }
