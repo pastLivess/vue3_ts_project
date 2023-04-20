@@ -2,17 +2,22 @@
   <div class="login-panel">
     <h2 class="login-title">后台管理系统</h2>
     <div class="login-content">
-      <el-tabs stretch type="border-card" class="demo-tabs">
-        <el-tab-pane>
+      <el-tabs
+        v-model="activeName"
+        stretch
+        type="border-card"
+        class="demo-tabs"
+      >
+        <el-tab-pane name="user">
           <template #label>
             <span class="custom-tabs-label">
               <el-icon><User /></el-icon>
               <span>账号登录</span>
             </span>
           </template>
-          <panel-account />
+          <panel-account ref="getPanel" />
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="phone">
           <template #label>
             <span class="custom-tabs-label">
               <el-icon><Iphone /></el-icon>
@@ -28,7 +33,11 @@
       <span><a href="javascript:;">忘记密码</a></span>
     </div>
     <div class="login-btn">
-      <el-button type="primary" size="large" style="width: 100%"
+      <el-button
+        @click="loginBtnClick"
+        type="primary"
+        size="large"
+        style="width: 100%"
         >立即登录</el-button
       >
     </div>
@@ -36,8 +45,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import panelAccount from "./panel-account.vue";
 import panelPhone from "./panel-phone.vue";
+const getPanel = ref<InstanceType<typeof panelAccount>>();
+const activeName = ref("user");
+function loginBtnClick() {
+  getPanel.value?.loginAction();
+}
 </script>
 
 <style scoped lang="less">
