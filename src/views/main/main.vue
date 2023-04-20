@@ -1,16 +1,19 @@
 <template>
   <div class="main">
     <el-row config="true" class="mb-4">
-      <el-button>Default</el-button>
-      <el-button type="primary">Primary</el-button>
-      <el-button type="success">Success</el-button>
-      <el-button type="info">Info</el-button>
-      <el-button type="warning">Warning</el-button>
-      <el-button type="danger">Danger</el-button>
+      <el-button @click="clear">Default</el-button>
     </el-row>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import router from "@/router";
+import { localCache } from "@/utils/cache";
+
+function clear() {
+  localCache.removeCache("token");
+  router.push("/login");
+}
+</script>
 
 <style scoped lang="less"></style>

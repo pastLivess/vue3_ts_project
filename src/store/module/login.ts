@@ -2,7 +2,6 @@ import { accountLoginRequest } from "@/service/modules/login";
 import { defineStore } from "pinia";
 import type { ICcount } from "@/types";
 import { localCache } from "@/utils/cache";
-import router from "@/router";
 const useLoginStore = defineStore("login", {
   state: () => ({
     id: "",
