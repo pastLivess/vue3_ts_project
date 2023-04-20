@@ -8,8 +8,8 @@
       status-icon
       class="demo-ruleForm"
     >
-      <el-form-item style="width: 95%" label="账号" prop="username">
-        <el-input v-model="account.username" type="text" autocomplete="off" />
+      <el-form-item style="width: 95%" label="账号" prop="name">
+        <el-input v-model="account.name" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item style="width: 95%" label="密码" prop="password">
         <el-input show-password v-model="account.password" type="password">
@@ -27,11 +27,11 @@ import type { ICcount } from "@/types";
 const loginStore = useLoginStore();
 const accountFormRef = ref<InstanceType<typeof ElForm>>();
 const account = reactive<ICcount>({
-  username: "",
+  name: "",
   password: ""
 });
 const accountRules: FormRules = {
-  username: [
+  name: [
     {
       required: true,
       message: "必须输入账号信息",

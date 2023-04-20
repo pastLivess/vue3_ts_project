@@ -1,4 +1,4 @@
 export interface ICcount {
-  username: string;
+  name: string;
   password: string;
 }
