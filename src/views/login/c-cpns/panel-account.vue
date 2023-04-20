@@ -24,6 +24,7 @@ import { reactive, ref } from "vue";
 import { ElMessage, type ElForm, type FormRules } from "element-plus";
 import useLoginStore from "@/store/module/login";
 import type { ICcount } from "@/types";
+import router from "@/router";
 const loginStore = useLoginStore();
 const accountFormRef = ref<InstanceType<typeof ElForm>>();
 const account = reactive<ICcount>({
@@ -61,13 +62,15 @@ const accountRules: FormRules = {
 function loginAction() {
   accountFormRef.value?.validate(async (valid) => {
     if (valid) {
-      await loginStore.loginAccountAction(account);
-      ElMessage.success("登录成功,正在跳转中~~~");
-    } else {
-      ElMessage.error("账号或密码校验失败");
+      try {
+        const res = await loginStore.loginAccountAction(account);
+        ElMessage.success("登录成功,正在跳转中~~~");
+        if (res === 0) router.push("/main");
+      } catch (error: any) {
+        console.log(error);
+      }
     }
   });
-  console.log("loginAction");
 }
 defineExpose({
   loginAction
