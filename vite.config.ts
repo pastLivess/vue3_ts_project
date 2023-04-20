@@ -1,7 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
 import {
   createStyleImportPlugin,
-  ElementPlusResolve // ElementpLus 下面还有n种框架支持
+  ElementPlusResolve //
 } from "vite-plugin-style-import";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
