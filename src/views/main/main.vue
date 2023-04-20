@@ -7,11 +7,13 @@
 </template>
 
 <script setup lang="ts">
+import { CACHE_PASSWORD, CACHE_TOKEN } from "@/global/constants";
 import router from "@/router";
 import { localCache } from "@/utils/cache";
 
 function clear() {
-  localCache.removeCache("token");
+  localCache.removeCache(CACHE_TOKEN);
+  localCache.removeCache(CACHE_PASSWORD);
   router.push("/login");
 }
 </script>

@@ -24,12 +24,18 @@ import { reactive, ref } from "vue";
 import { ElMessage, type ElForm, type FormRules } from "element-plus";
 import useLoginStore from "@/store/module/login";
 import type { ICcount } from "@/types";
+import { localCache } from "@/utils/cache";
 import router from "@/router";
+import { CACHE_REMEMBER_PASSWORD, CACHE_PASSWORD } from "@/global/constants";
 const loginStore = useLoginStore();
 const accountFormRef = ref<InstanceType<typeof ElForm>>();
 const account = reactive<ICcount>({
-  name: "",
-  password: ""
+  name: localCache.getCache("username") ?? "",
+  password:
+    localCache.getCache(CACHE_REMEMBER_PASSWORD) === "true" &&
+    localCache.getCache(CACHE_PASSWORD)
+      ? localCache.getCache(CACHE_PASSWORD)
+      : ""
 });
 const accountRules: FormRules = {
   name: [
@@ -59,13 +65,18 @@ const accountRules: FormRules = {
 };
 
 // 收集登录和密码
-function loginAction() {
+function loginAction(isRememberPwd: boolean) {
   accountFormRef.value?.validate(async (valid) => {
     if (valid) {
       try {
-        const res = await loginStore.loginAccountAction(account);
+        await loginStore.loginAccountAction(account);
         ElMessage.success("登录成功,正在跳转中~~~");
-        if (res === 0) router.push("/main");
+        router.push("/main");
+        if (isRememberPwd) {
+          localCache.setCache(CACHE_PASSWORD, account.password);
+        } else {
+          localCache.removeCache(CACHE_PASSWORD);
+        }
       } catch (error: any) {
         console.log(error);
       }
