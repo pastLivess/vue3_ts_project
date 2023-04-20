@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <el-row class="mb-4">
+    <el-row config="true" class="mb-4">
       <el-button>Default</el-button>
       <el-button type="primary">Primary</el-button>
       <el-button type="success">Success</el-button>

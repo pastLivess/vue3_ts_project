@@ -1,9 +1,15 @@
 {
   "extends": "@vue/tsconfig/tsconfig.node.json",
-  "include": ["vite.config.*", "vitest.config.*", "cypress.config.*"],
+  "include": [
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "components.d.ts",
+    "auto-imports.d.ts"
+  ],
   "compilerOptions": {
     "composite": true,
-    "types": ["node"],
+    "types": ["node", "element-plus/global"],
     "ignoreDeprecations": "5.0"
   }
 }

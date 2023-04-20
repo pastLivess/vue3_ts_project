@@ -1,8 +1,7 @@
 <template>
   <div class="app">
-    <h2>App</h2>
-    <RouterLink to="/main">主要</RouterLink>
-    <RouterLink to="/login">login</RouterLink>
+    <!-- <RouterLink to="/main">主要</RouterLink> -->
+    <!-- <RouterLink to="/login">login</RouterLink> -->
     <RouterView />
   </div>
 </template>
@@ -11,8 +10,7 @@
 
 <style scoped lang="less">
 .app {
-  width: 100vh;
+  width: 100vw;
   height: 100vh;
-  background-color: skyblue;
 }
 </style>
