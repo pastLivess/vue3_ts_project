@@ -1,5 +1,8 @@
 import { fileURLToPath, URL } from "node:url";
-
+import {
+  createStyleImportPlugin,
+  ElementPlusResolve // ElementpLus 下面还有n种框架支持
+} from "vite-plugin-style-import";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
@@ -15,6 +18,18 @@ export default defineConfig({
     }),
     Components({
       resolvers: [ElementPlusResolver()]
+    }),
+    createStyleImportPlugin({
+      resolves: [ElementPlusResolve()],
+      libs: [
+        {
+          libraryName: "element-plus", // element-plus
+          esModule: true,
+          resolveStyle: (name) => {
+            return `element-plus/theme-chalk/${name}.css`; // element-plus的相对应组件css的位置
+          }
+        }
+      ]
     })
   ],
   resolve: {

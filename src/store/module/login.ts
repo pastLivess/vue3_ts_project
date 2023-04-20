@@ -1,13 +1,20 @@
+import { accountLoginRequest } from "@/service/modules/login";
 import { defineStore } from "pinia";
-
+import type { ICcount } from "@/types";
 const useLoginStore = defineStore("login", {
   state: () => ({
-    counter: 0
+    id: "",
+    name: "",
+    token: ""
   }),
   actions: {
-    changeCounter(num: number) {
-      this.counter = num;
-      // console.log(this);
+    async loginAccountAction(account: ICcount) {
+      const loginRes = await accountLoginRequest(account);
+
+      const { id, name, token } = loginRes.data;
+      this.id = id;
+      this.name = name;
+      this.token = token;
     }
   },
   getters: {}

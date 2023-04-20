@@ -21,10 +21,12 @@
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import type { FormRules } from "element-plus";
-
-const accountFormRef = ref();
-const account = reactive({
+import { ElMessage, type ElForm, type FormRules } from "element-plus";
+import useLoginStore from "@/store/module/login";
+import type { ICcount } from "@/types";
+const loginStore = useLoginStore();
+const accountFormRef = ref<InstanceType<typeof ElForm>>();
+const account = reactive<ICcount>({
   username: "",
   password: ""
 });
@@ -57,6 +59,14 @@ const accountRules: FormRules = {
 
 // 收集登录和密码
 function loginAction() {
+  accountFormRef.value?.validate(async (valid) => {
+    if (valid) {
+      await loginStore.loginAccountAction(account);
+      ElMessage.success("登录成功,正在跳转中~~~");
+    } else {
+      ElMessage.error("账号或密码校验失败");
+    }
+  });
   console.log("loginAction");
 }
 defineExpose({
