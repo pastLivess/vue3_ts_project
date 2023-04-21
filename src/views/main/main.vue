@@ -34,7 +34,7 @@ import mainMenu from "@/views/main/c-cpns/main-menu.vue";
     height: 100%;
   }
   .el-aside {
-    background-color: orange;
+    background-color: rgb(41, 54, 75);
   }
   .el-header {
     background-color: red;

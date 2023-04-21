@@ -6,7 +6,12 @@ import {
 import { defineStore } from "pinia";
 import type { ICcount, IdType } from "@/types";
 import { localCache } from "@/utils/cache";
-import { CACHE_TOKEN, CACHE_USERNAME } from "@/global/constants";
+import {
+  CACHE_TOKEN,
+  CACHE_USERINFO,
+  CACHE_USERINFO_MENU,
+  CACHE_USERNAME
+} from "@/global/constants";
 
 interface ILoginState {
   token: string;
@@ -17,8 +22,8 @@ interface ILoginState {
 const useLoginStore = defineStore("login", {
   state: (): ILoginState => ({
     token: localCache.getCache(CACHE_TOKEN) ?? "",
-    userInfo: {},
-    userInfoMenus: []
+    userInfo: localCache.getCache(CACHE_USERINFO) ?? {},
+    userInfoMenus: localCache.getCache(CACHE_USERINFO_MENU) ?? []
   }),
   actions: {
     async loginAccountAction(account: ICcount) {
@@ -34,6 +39,8 @@ const useLoginStore = defineStore("login", {
       const userinfoMenuRes = await this.userInfoMenuAction(id);
       this.userInfo = userInfoRes.data;
       this.userInfoMenus = userinfoMenuRes.data;
+      localCache.setCache(CACHE_USERINFO, this.userInfo);
+      localCache.setCache(CACHE_USERINFO_MENU, this.userInfoMenus);
     },
     async userInfoAction(id: IdType) {
       return await getUserInfoById(id);

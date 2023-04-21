@@ -1,49 +1,39 @@
 <template>
   <div class="main-menu">
     <el-menu
-      default-active="2"
+      text-color="#b7bdc3"
+      active-text-color="#fff"
+      background-color="#001529"
+      default-active="3"
       class="el-menu-vertical-demo"
       :collapse="isCollapse"
     >
-      <el-sub-menu index="1">
-        <template #title>
-          <el-icon><location /></el-icon>
-          <span>Navigator One</span>
-        </template>
-        <el-menu-item-group>
-          <template #title><span>Group One</span></template>
-          <el-menu-item index="1-1">item one</el-menu-item>
-          <el-menu-item index="1-2">item two</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group title="Group Two">
-          <el-menu-item index="1-3">item three</el-menu-item>
-        </el-menu-item-group>
-        <el-sub-menu index="1-4">
-          <template #title><span>item four</span></template>
-          <el-menu-item index="1-4-1">item one</el-menu-item>
+      <template v-for="item in userInfoMenus" :key="item.id">
+        <el-sub-menu :index="item.id">
+          <template #title>
+            <el-icon><location /></el-icon>
+            <span>{{ item.name }}</span>
+          </template>
+          <template v-for="iten in item.children" :key="iten.id">
+            <el-menu-item :index="iten.id">
+              <template #title>
+                <span> {{ iten.name }}</span>
+              </template>
+            </el-menu-item>
+          </template>
         </el-sub-menu>
-      </el-sub-menu>
-      <el-menu-item index="2">
-        <el-icon><icon-menu /></el-icon>
-        <template #title>Navigator Two</template>
-      </el-menu-item>
-      <el-menu-item index="3" disabled>
-        <el-icon><document /></el-icon>
-        <template #title>Navigator Three</template>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <el-icon><setting /></el-icon>
-        <template #title>Navigator Four</template>
-      </el-menu-item>
+      </template>
     </el-menu>
   </div>
 </template>
 
 <script setup lang="ts">
 import useLoginStore from "@/store/module/login";
+import { storeToRefs } from "pinia";
 import { ref } from "vue";
 const isCollapse = ref(false);
 const loginStore = useLoginStore();
+const { userInfoMenus } = storeToRefs(loginStore);
 </script>
 
 <style scoped lang="less"></style>

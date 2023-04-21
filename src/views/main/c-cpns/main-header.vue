@@ -13,6 +13,7 @@
   justify-content: center;
   align-items: center;
   color: #fff;
+  background-color: #203a58;
   height: 40px;
   .main-header-logo {
     width: 32px;
