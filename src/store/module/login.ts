@@ -12,7 +12,9 @@ import {
   CACHE_USERINFO_MENU,
   CACHE_USERNAME
 } from "@/global/constants";
+import { mapMenuToRoute } from "@/utils/map-menu-to-route";
 
+import router from "@/router";
 interface ILoginState {
   token: string;
   userInfo: any;
@@ -37,10 +39,15 @@ const useLoginStore = defineStore("login", {
       // 获取用户信息与菜单(权限菜单)
       const userInfoRes = await this.userInfoAction(id);
       const userinfoMenuRes = await this.userInfoMenuAction(id);
+
       this.userInfo = userInfoRes.data;
       this.userInfoMenus = userinfoMenuRes.data;
       localCache.setCache(CACHE_USERINFO, this.userInfo);
       localCache.setCache(CACHE_USERINFO_MENU, this.userInfoMenus);
+
+      // 根据权限映射路由的函数
+      const routes = mapMenuToRoute(userinfoMenuRes.data);
+      routes.forEach((route) => router.addRoute("main", route));
     },
     async userInfoAction(id: IdType) {
       return await getUserInfoById(id);
