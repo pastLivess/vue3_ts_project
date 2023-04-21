@@ -12,7 +12,9 @@
         <el-header height="50px">
           <main-header @foldChange="handlerFoldChange" />
         </el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view />
+        </el-main>
       </el-container>
     </el-container>
   </div>
