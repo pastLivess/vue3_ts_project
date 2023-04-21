@@ -49,7 +49,7 @@ function handlerFoldChange(flag: any) {
     // background-color: red;
   }
   .el-main {
-    background-color: skyblue;
+    background-color: rgba(0, 0, 0, 0.1);
   }
   .main-menu-header {
     display: flex;
