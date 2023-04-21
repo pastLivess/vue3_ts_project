@@ -8,6 +8,7 @@
       :collapse-transition="false"
       class="el-menu-vertical-demo"
       :collapse="isFold"
+      router
     >
       <template v-for="item in userInfoMenus" :key="item.id">
         <el-sub-menu :index="item.id + ''">
@@ -18,7 +19,7 @@
             <span>{{ item.name }}</span>
           </template>
           <template v-for="iten in item.children" :key="iten.id">
-            <el-menu-item :index="iten.id + ''">
+            <el-menu-item :index="iten.url">
               <template #title>
                 <span> {{ iten.name }}</span>
               </template>
@@ -31,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import router from "@/router";
 import useLoginStore from "@/store/module/login";
 import { storeToRefs } from "pinia";
 

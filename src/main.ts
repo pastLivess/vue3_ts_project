@@ -7,4 +7,7 @@ import router from "./router";
 import store from "./store";
 const app = createApp(App);
 
-app.use(router).use(store).use(registerIcons).mount("#app");
+app.use(registerIcons);
+app.use(store);
+app.use(router);
+app.mount("#app");

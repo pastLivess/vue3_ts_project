@@ -23,16 +23,15 @@ interface ILoginState {
 
 const useLoginStore = defineStore("login", {
   state: (): ILoginState => ({
-    token: localCache.getCache(CACHE_TOKEN) ?? "",
-    userInfo: localCache.getCache(CACHE_USERINFO) ?? {},
-    userInfoMenus: localCache.getCache(CACHE_USERINFO_MENU) ?? []
+    token: "",
+    userInfo: {},
+    userInfoMenus: []
   }),
   actions: {
     async loginAccountAction(account: ICcount) {
       const loginRes = await accountLoginRequest(account);
 
       const { id, name, token } = loginRes.data;
-
       this.token = token;
       localCache.setCache(CACHE_TOKEN, this.token);
       localCache.setCache(CACHE_USERNAME, name);
@@ -44,9 +43,17 @@ const useLoginStore = defineStore("login", {
       this.userInfoMenus = userinfoMenuRes.data;
       localCache.setCache(CACHE_USERINFO, this.userInfo);
       localCache.setCache(CACHE_USERINFO_MENU, this.userInfoMenus);
-
-      // 根据权限映射路由的函数
-      const routes = mapMenuToRoute(userinfoMenuRes.data);
+    },
+    loadLocalCacheAction() {
+      const token = localCache.getCache(CACHE_TOKEN) ?? "";
+      const userInfo = localCache.getCache(CACHE_USERINFO) ?? {};
+      const userInfoMenu = localCache.getCache(CACHE_USERINFO_MENU) ?? [];
+      if (token && userInfo && userInfoMenu) {
+        this.token = token;
+        this.userInfo = userInfo;
+        this.userInfoMenus = userInfoMenu;
+      } // 根据权限映射路由的函数
+      const routes = mapMenuToRoute(userInfoMenu);
       routes.forEach((route) => router.addRoute("main", route));
     },
     async userInfoAction(id: IdType) {
