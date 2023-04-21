@@ -35,14 +35,11 @@
 </template>
 
 <script setup lang="ts">
-import { CACHE_PASSWORD, CACHE_TOKEN } from "@/global/constants";
-import router from "@/router";
-import { localCache } from "@/utils/cache";
+import useLoginStore from "@/store/module/login";
 
+const loginStore = useLoginStore();
 function handlerExitClick() {
-  localCache.removeCache(CACHE_TOKEN);
-  localCache.removeCache(CACHE_PASSWORD);
-  router.push("/login");
+  loginStore.removeLocalCacheAction();
 }
 </script>
 

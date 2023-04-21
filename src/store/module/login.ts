@@ -7,6 +7,7 @@ import { defineStore } from "pinia";
 import type { ICcount, IdType } from "@/types";
 import { localCache } from "@/utils/cache";
 import {
+  CACHE_PASSWORD,
   CACHE_TOKEN,
   CACHE_USERINFO,
   CACHE_USERINFO_MENU,
@@ -43,11 +44,14 @@ const useLoginStore = defineStore("login", {
       this.userInfoMenus = userinfoMenuRes.data;
       localCache.setCache(CACHE_USERINFO, this.userInfo);
       localCache.setCache(CACHE_USERINFO_MENU, this.userInfoMenus);
+      this.loadLocalCacheAction();
     },
     loadLocalCacheAction() {
-      const token = localCache.getCache(CACHE_TOKEN) ?? "";
-      const userInfo = localCache.getCache(CACHE_USERINFO) ?? {};
+      const token = localCache.getCache(CACHE_TOKEN);
+      const userInfo = localCache.getCache(CACHE_USERINFO);
       const userInfoMenu = localCache.getCache(CACHE_USERINFO_MENU) ?? [];
+      // console.log(userInfoMenu);
+
       if (token && userInfo && userInfoMenu) {
         this.token = token;
         this.userInfo = userInfo;
@@ -55,6 +59,13 @@ const useLoginStore = defineStore("login", {
       } // 根据权限映射路由的函数
       const routes = mapMenuToRoute(userInfoMenu);
       routes.forEach((route) => router.addRoute("main", route));
+    },
+    removeLocalCacheAction() {
+      localCache.removeCache(CACHE_TOKEN);
+      localCache.removeCache(CACHE_PASSWORD);
+      localCache.removeCache(CACHE_USERINFO);
+      localCache.removeCache(CACHE_USERINFO_MENU);
+      router.push("/login");
     },
     async userInfoAction(id: IdType) {
       return await getUserInfoById(id);

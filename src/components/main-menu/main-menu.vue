@@ -4,7 +4,7 @@
       text-color="#b7bdc3"
       active-text-color="#fff"
       background-color="#001529"
-      default-active="3"
+      :default-active="defaultActive"
       :collapse-transition="false"
       class="el-menu-vertical-demo"
       :collapse="isFold"
@@ -34,7 +34,8 @@
 import router from "@/router";
 import useLoginStore from "@/store/module/login";
 import { storeToRefs } from "pinia";
-
+import { ref } from "vue";
+import { mapPathToMenu } from "@/utils/map-path-to-menu";
 defineProps({
   isFold: {
     type: Boolean,
@@ -45,9 +46,14 @@ const loginStore = useLoginStore();
 const { userInfoMenus } = storeToRefs(loginStore);
 
 function handlerItemClick(item: any) {
-  // console.log(item);
   router.replace(item.url);
 }
+
+const pathMenu = mapPathToMenu(
+  router.currentRoute.value.fullPath,
+  userInfoMenus.value
+);
+const defaultActive = ref(pathMenu?.id + "");
 </script>
 
 <style scoped lang="less"></style>
