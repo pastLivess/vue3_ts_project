@@ -34,7 +34,7 @@
 import router from "@/router";
 import useLoginStore from "@/store/module/login";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { computed } from "vue";
 import { mapPathToMenu } from "@/utils/map-path-to-menu";
 defineProps({
   isFold: {
@@ -49,11 +49,13 @@ function handlerItemClick(item: any) {
   router.replace(item.url);
 }
 
-const pathMenu = mapPathToMenu(
-  router.currentRoute.value.fullPath,
-  userInfoMenus.value
-);
-const defaultActive = ref(pathMenu?.id + "");
+const defaultActive = computed(() => {
+  const pathMenu = mapPathToMenu(
+    router.currentRoute.value.fullPath,
+    userInfoMenus.value
+  );
+  return pathMenu?.id + "";
+});
 </script>
 
 <style scoped lang="less"></style>

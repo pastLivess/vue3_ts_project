@@ -6,17 +6,14 @@
       </el-icon>
     </div>
     <div class="content">
-      <div class="breadcrumb">面包屑</div>
-      <div class="user">
-        <user-header />
-      </div>
+      <breadcrumb />
+      <user-header />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import userHeader from "./c-cpns/user-header.vue";
 const emits = defineEmits(["foldChange"]);
 const isShowMenu = ref(false);
 function showMenuClick() {
