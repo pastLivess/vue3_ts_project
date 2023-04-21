@@ -8,7 +8,6 @@
       :collapse-transition="false"
       class="el-menu-vertical-demo"
       :collapse="isFold"
-      router
     >
       <template v-for="item in userInfoMenus" :key="item.id">
         <el-sub-menu :index="item.id + ''">
@@ -19,7 +18,7 @@
             <span>{{ item.name }}</span>
           </template>
           <template v-for="iten in item.children" :key="iten.id">
-            <el-menu-item :index="iten.url">
+            <el-menu-item :index="iten.id + ''" @click="handlerItemClick(iten)">
               <template #title>
                 <span> {{ iten.name }}</span>
               </template>
@@ -44,6 +43,11 @@ defineProps({
 });
 const loginStore = useLoginStore();
 const { userInfoMenus } = storeToRefs(loginStore);
+
+function handlerItemClick(item: any) {
+  // console.log(item);
+  router.replace(item.url);
+}
 </script>
 
 <style scoped lang="less"></style>

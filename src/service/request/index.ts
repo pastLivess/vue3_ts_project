@@ -1,7 +1,8 @@
 import axios from "axios";
 import type { AxiosInstance } from "axios";
 import type { HYRequestConfig } from "./type";
-import store from "@/store";
+import { localCache } from "@/utils/cache";
+import { CACHE_TOKEN } from "@/global/constants";
 
 // 拦截器: 蒙版Loading/token/修改配置
 
@@ -25,9 +26,8 @@ class HYRequest {
     // 每个instance实例都添加拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        const { token } = store.state.value.login;
+        const token = localCache.getCache(CACHE_TOKEN);
         config.headers.Authorization = `Bearer ${token}`;
-
         return config;
       },
       (err) => {

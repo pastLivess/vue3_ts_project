@@ -5,7 +5,6 @@ const store = createPinia();
 function registerStore(app: App<Element>) {
   app.use(store);
   const loginStore = useLoginStore();
-
   loginStore.loadLocalCacheAction();
 }
 export default registerStore;

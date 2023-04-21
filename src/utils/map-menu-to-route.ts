@@ -20,7 +20,7 @@ export function loadLocalRoutes() {
   }
   return localRoutes;
 }
-
+export let firstMenu: any;
 export function mapMenuToRoute(userInfoMenus: any) {
   const localRoutes = loadLocalRoutes();
   const routes = [];
@@ -30,6 +30,7 @@ export function mapMenuToRoute(userInfoMenus: any) {
         return item.path === submenu.url;
       });
       if (route) routes.push(route);
+      if (!firstMenu && route) firstMenu = submenu;
     }
   }
   return routes;
