@@ -9,13 +9,15 @@
       :collapse="isCollapse"
     >
       <template v-for="item in userInfoMenus" :key="item.id">
-        <el-sub-menu :index="item.id">
+        <el-sub-menu :index="item.id + ''">
           <template #title>
-            <el-icon><location /></el-icon>
+            <el-icon>
+              <component :is="item.icon.split('el-icon')[1]"></component>
+            </el-icon>
             <span>{{ item.name }}</span>
           </template>
           <template v-for="iten in item.children" :key="iten.id">
-            <el-menu-item :index="iten.id">
+            <el-menu-item :index="iten.id + ''">
               <template #title>
                 <span> {{ iten.name }}</span>
               </template>
