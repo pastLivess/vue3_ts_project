@@ -7,13 +7,16 @@
     </div>
     <div class="content">
       <div class="breadcrumb">面包屑</div>
-      <div class="user">个人信息</div>
+      <div class="user">
+        <user-header />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import userHeader from "./c-cpns/user-header.vue";
 const emits = defineEmits(["foldChange"]);
 const isShowMenu = ref(false);
 function showMenuClick() {
@@ -26,13 +29,15 @@ function showMenuClick() {
 .main-header {
   display: flex;
   align-items: center;
-  height: 60px;
+  height: 50px;
   .content {
     display: flex;
     flex: 1;
     margin-left: 15px;
     .breadcrumb {
       flex: 1;
+      font-size: 14px;
+      line-height: 30px;
     }
   }
 }

@@ -28,28 +28,23 @@ function handlerFoldChange(flag: any) {
 
   isFold.value = flag;
 }
-// import { CACHE_PASSWORD, CACHE_TOKEN } from "@/global/constants";
-// import router from "@/router";
-// import { localCache } from "@/utils/cache";
-
-// function clear() {
-//   localCache.removeCache(CACHE_TOKEN);
-//   localCache.removeCache(CACHE_PASSWORD);
-//   router.push("/login");
-// }
 </script>
 
 <style scoped lang="less">
 .main {
   height: 100%;
+
   .el-container {
     height: 100%;
   }
   .el-aside {
     background-color: rgb(41, 54, 75);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .el-header {
-    background-color: red;
+    // background-color: red;
   }
   .el-main {
     background-color: skyblue;
