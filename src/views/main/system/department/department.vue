@@ -1,6 +1,10 @@
 <template>
   <div>
-    <page-search @resetForm="handlerResetForm" @queryForm="handlerQueryForm" />
+    <page-search
+      :searchConfig="searchConfig"
+      @resetForm="handlerResetForm"
+      @queryForm="handlerQueryForm"
+    />
     <page-content
       ref="pageContentRef"
       @createEditUser="handlerCreateEditPage"
@@ -10,13 +14,16 @@
 </template>
 
 <script setup lang="ts">
-import pageSearch from "./c-cpns/page-search.vue";
-import pageContent from "./c-cpns/page-content.vue";
-import pageModal from "./c-cpns/page-modal.vue";
+import pageSearch from "../../../../components/page-search/page-search.vue";
+import pageContent from "../../../../components/page-content/page-content.vue";
+import pageModal from "../../../../components/page-modal/page-modal.vue";
+import searchConfig from "./config/search.config";
 import { ref } from "vue";
 const pageContentRef = ref<InstanceType<typeof pageContent>>();
 const pageModalRef = ref<InstanceType<typeof pageModal>>();
 function handlerQueryForm(queryInfo: any) {
+  console.log(queryInfo);
+
   pageContentRef.value?.fetchPageListData(queryInfo);
 }
 function handlerResetForm() {

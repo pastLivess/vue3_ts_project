@@ -87,7 +87,7 @@ const searchForm = reactive({
   realname: "",
   cellphone: "",
   enable: 1,
-  createAt: []
+  createAt: ""
 });
 const emits = defineEmits(["resetForm", "queryForm"]);
 const elFormRef = ref<InstanceType<typeof ElForm>>();

@@ -7,33 +7,26 @@
       size="large"
     >
       <el-row :gutter="20">
-        <el-col :span="8">
-          <el-form-item prop="userName" label="部门名称">
-            <el-input
-              v-model="searchForm.name"
-              placeholder="请输入要查询的部门名称"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item prop="leader" label="部门领导">
-            <el-input
-              v-model="searchForm.leader"
-              placeholder="请输入要查询的部门领导"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item prop="createAt" label="创建时间">
-            <el-date-picker
-              type="daterange"
-              range-separator="To"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              v-model="searchForm.createAt"
-            />
-          </el-form-item>
-        </el-col>
+        <template v-for="item in searchConfig.formItems" :key="item.prop">
+          <el-col :span="8">
+            <el-form-item :label="item.label" :prop="item.prop">
+              <template v-if="item.type === 'input'">
+                <el-input
+                  v-model="searchForm[item.prop]"
+                  :placeholder="item.placeholder"
+                />
+              </template>
+              <template v-if="item.type === 'date-picker'">
+                <el-date-picker
+                  v-model="searchForm[item.prop]"
+                  type="daterange"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                ></el-date-picker>
+              </template>
+            </el-form-item>
+          </el-col>
+        </template>
       </el-row>
     </el-form>
     <div class="btns">
@@ -56,12 +49,19 @@
 import type { ElForm } from "element-plus";
 import { ref } from "vue";
 import { reactive } from "vue";
+interface IProps {
+  searchConfig: {
+    formItems: any[];
+  };
+}
+const props = defineProps<IProps>();
 
-const searchForm = reactive({
-  name: "",
-  leader: "",
-  createAt: []
-});
+const initialForm: any = {};
+
+for (const item of props.searchConfig.formItems) {
+  initialForm[item.prop] = "";
+}
+const searchForm = reactive(initialForm);
 const emits = defineEmits(["resetForm", "queryForm"]);
 const elFormRef = ref<InstanceType<typeof ElForm>>();
 function handlerResetForm() {
