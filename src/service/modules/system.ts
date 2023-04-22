@@ -63,3 +63,8 @@ export function postPageListData(pageName: string, formData: object) {
     data: formData
   });
 }
+export function deletePageById(pageName: string, id: IdType) {
+  return hyRequest.delete({
+    url: `/${pageName}/${id}`
+  });
+}

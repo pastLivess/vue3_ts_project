@@ -1,4 +1,5 @@
 import {
+  deletePageById,
   deleteUserById,
   patchUserById,
   postNewUser,
@@ -42,11 +43,20 @@ const useSystemStore = defineStore("system", {
       await patchUserById(id, formData);
       this.fetchUserListAction({ offset: 0, size: 6 });
     },
+    // 重构-所有页面共用的请求
     async fetchPageListAction(pageName: string, formData: object) {
       const pageListRes = await postPageListData(pageName, formData);
       const { totalCount, list } = pageListRes.data;
       this.pageList = list;
       this.pageTotalCount = totalCount;
+    },
+    async fetchDeletePageAction(
+      pageName: string,
+      id: number,
+      formData = { offset: 0, size: 6 }
+    ) {
+      await deletePageById(pageName, id);
+      this.fetchPageListAction(pageName, formData);
     }
   }
 });

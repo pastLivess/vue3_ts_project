@@ -119,7 +119,7 @@ function handlerEdit(currentEditUser: any) {
   emits("createEditUser", currentEditUser);
 }
 function handlerDelete(id: IdType) {
-  systemStore.fetchDeleteUserAction(id);
+  systemStore.fetchDeletePageAction("department", id);
 }
 function createNewUser() {
   emits("createEditUser");
