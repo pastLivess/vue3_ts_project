@@ -66,6 +66,15 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[6, 12, 18]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="userTotalCount"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -74,9 +83,23 @@
 import useSearchStore from "@/store/module/system";
 import { storeToRefs } from "pinia";
 import { formatUTC } from "@/utils/format";
+import { ref } from "vue";
 const searchStore = useSearchStore();
-searchStore.fetchUserListAction();
-const { userList } = storeToRefs(searchStore);
+const { userList, userTotalCount } = storeToRefs(searchStore);
+const pageSize = ref(6);
+const currentPage = ref(1);
+fetchUserListData();
+function handleSizeChange() {
+  fetchUserListData();
+}
+function handleCurrentChange() {
+  fetchUserListData();
+}
+function fetchUserListData() {
+  const size = pageSize.value;
+  const offset = (currentPage.value - 1) * size;
+  searchStore.fetchUserListAction(offset, size);
+}
 </script>
 
 <style scoped lang="less">
@@ -90,10 +113,14 @@ const { userList } = storeToRefs(searchStore);
     background-color: #fff;
   }
   .main {
+    background-color: #fff;
     :deep(.el-table--border) {
       display: flex;
       justify-content: center;
       padding: 10px;
+    }
+    :deep(.el-pagination) {
+      justify-content: flex-end;
     }
   }
 }
