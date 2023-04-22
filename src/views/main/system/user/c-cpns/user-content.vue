@@ -28,7 +28,13 @@
           label="手机号码"
           width="120"
         />
-        <el-table-column align="center" prop="enable" label="状态" width="80" />
+        <el-table-column align="center" prop="enable" label="状态" width="100">
+          <template #default="scope">
+            <el-button plain :type="scope.row.enable ? 'success' : 'danger'">
+              {{ scope.row.enable ? "启用" : "禁用" }}
+            </el-button>
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           prop="createAt"
