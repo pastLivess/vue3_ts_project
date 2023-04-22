@@ -56,11 +56,23 @@
           </template>
         </el-table-column>
         <el-table-column align="center" prop="date" label="操作" width="200">
-          <template #default>
-            <el-button text icon="edit" type="primary" size="small">
+          <template #default="scope">
+            <el-button
+              @click="handlerEdit"
+              text
+              icon="edit"
+              type="primary"
+              size="small"
+            >
               编辑
             </el-button>
-            <el-button text icon="delete" type="danger" size="small">
+            <el-button
+              @click="handlerDelete(scope.row.id)"
+              text
+              icon="delete"
+              type="danger"
+              size="small"
+            >
               删除
             </el-button>
           </template>
@@ -80,12 +92,13 @@
 </template>
 
 <script setup lang="ts">
-import useSearchStore from "@/store/module/system";
+import useSystemStore from "@/store/module/system";
 import { storeToRefs } from "pinia";
 import { formatUTC } from "@/utils/format";
 import { ref } from "vue";
-const searchStore = useSearchStore();
-const { userList, userTotalCount } = storeToRefs(searchStore);
+import type { IdType } from "@/types";
+const systemStore = useSystemStore();
+const { userList, userTotalCount } = storeToRefs(systemStore);
 const pageSize = ref(6);
 const currentPage = ref(1);
 fetchUserListData();
@@ -99,7 +112,11 @@ function fetchUserListData(formData = {}) {
   const size = pageSize.value;
   const offset = (currentPage.value - 1) * size;
   const info = { offset, size, ...formData };
-  searchStore.fetchUserListAction(info);
+  systemStore.fetchUserListAction(info);
+}
+function handlerEdit() {}
+function handlerDelete(id: IdType) {
+  systemStore.fetchDeleteUserAction(id);
 }
 defineExpose({
   fetchUserListData
