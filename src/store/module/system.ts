@@ -8,8 +8,9 @@ const useSystemStore = defineStore("system", {
     userTotalCount: 0
   }),
   actions: {
-    async fetchUserListAction(offset = 0, size = 6) {
-      const userListRes = await postUserListData(offset, size);
+    async fetchUserListAction(formData: object) {
+      const userListRes = await postUserListData(formData);
+      console.log(formData);
       const { list, totalCount } = userListRes.data;
       this.userList = list;
       this.userTotalCount = totalCount;

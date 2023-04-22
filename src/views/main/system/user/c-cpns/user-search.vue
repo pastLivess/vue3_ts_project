@@ -65,7 +65,12 @@
       <el-button style="height: 32px" size="large" @click="handlerResetForm"
         >重置</el-button
       >
-      <el-button style="height: 32px" size="large" type="primary">
+      <el-button
+        style="height: 32px"
+        size="large"
+        type="primary"
+        @click="handlerQueryForm"
+      >
         查询
       </el-button>
     </div>
@@ -84,9 +89,15 @@ const searchForm = reactive({
   enable: 1,
   createAt: []
 });
+const emits = defineEmits(["resetForm", "queryForm"]);
 const elFormRef = ref<InstanceType<typeof ElForm>>();
 function handlerResetForm() {
   elFormRef.value?.resetFields(); /* 重置表单方法 */
+  emits("resetForm");
+}
+function handlerQueryForm() {
+  const { name, realname, cellphone, enable } = searchForm;
+  emits("queryForm", { name, realname, cellphone, enable });
 }
 </script>
 

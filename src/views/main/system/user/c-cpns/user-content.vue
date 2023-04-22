@@ -95,11 +95,15 @@ function handleSizeChange() {
 function handleCurrentChange() {
   fetchUserListData();
 }
-function fetchUserListData() {
+function fetchUserListData(formData = {}) {
   const size = pageSize.value;
   const offset = (currentPage.value - 1) * size;
-  searchStore.fetchUserListAction(offset, size);
+  const info = { offset, size, ...formData };
+  searchStore.fetchUserListAction(info);
 }
+defineExpose({
+  fetchUserListData
+});
 </script>
 
 <style scoped lang="less">

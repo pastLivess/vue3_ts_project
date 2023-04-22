@@ -1,11 +1,8 @@
 import hyRequest from "..";
 
-export function postUserListData(offset: number, size: number) {
+export function postUserListData(formData: object) {
   return hyRequest.post({
     url: "/users/list",
-    data: {
-      offset,
-      size
-    }
+    data: formData
   });
 }
