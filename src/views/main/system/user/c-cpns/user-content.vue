@@ -40,13 +40,21 @@
           prop="createAt"
           label="创建时间"
           width="220"
-        />
+        >
+          <template #default="scope">
+            {{ formatUTC(scope.row.createAt) }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
           prop="updateAt"
           label="更新时间"
           width="220"
-        />
+        >
+          <template #default="scope">
+            {{ formatUTC(scope.row.updateAt) }}
+          </template>
+        </el-table-column>
         <el-table-column align="center" prop="date" label="操作" width="200">
           <template #default>
             <el-button text icon="edit" type="primary" size="small">
@@ -65,6 +73,7 @@
 <script setup lang="ts">
 import useSearchStore from "@/store/module/system";
 import { storeToRefs } from "pinia";
+import { formatUTC } from "@/utils/format";
 const searchStore = useSearchStore();
 searchStore.fetchUserListAction();
 const { userList } = storeToRefs(searchStore);
