@@ -68,3 +68,16 @@ export function deletePageById(pageName: string, id: IdType) {
     url: `/${pageName}/${id}`
   });
 }
+export function postCreatePage(pageName: string, formData: object) {
+  return hyRequest.post({
+    url: `/${pageName}`,
+    data: formData
+  });
+}
+// 修改
+export function patchPageById(pageName: string, id: IdType, formData: object) {
+  return hyRequest.patch({
+    url: `/${pageName}/${id}`,
+    data: formData
+  });
+}

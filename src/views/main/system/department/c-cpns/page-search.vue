@@ -16,9 +16,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item prop="realname" label="部门领导">
+          <el-form-item prop="leader" label="部门领导">
             <el-input
-              v-model="searchForm.parentId"
+              v-model="searchForm.leader"
               placeholder="请输入要查询的部门领导"
             ></el-input>
           </el-form-item>
@@ -59,7 +59,7 @@ import { reactive } from "vue";
 
 const searchForm = reactive({
   name: "",
-  parentId: "",
+  leader: "",
   createAt: []
 });
 const emits = defineEmits(["resetForm", "queryForm"]);
@@ -69,7 +69,6 @@ function handlerResetForm() {
   emits("resetForm");
 }
 function handlerQueryForm() {
-  // const { name, realname, cellphone, enable } = searchForm;
   emits("queryForm", searchForm);
 }
 </script>

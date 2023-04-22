@@ -1,7 +1,9 @@
 import {
   deletePageById,
   deleteUserById,
+  patchPageById,
   patchUserById,
+  postCreatePage,
   postNewUser,
   postPageListData,
   postUserListData
@@ -50,13 +52,21 @@ const useSystemStore = defineStore("system", {
       this.pageList = list;
       this.pageTotalCount = totalCount;
     },
-    async fetchDeletePageAction(
-      pageName: string,
-      id: number,
-      formData = { offset: 0, size: 6 }
-    ) {
+    // 删除
+    async fetchDeletePageAction(pageName: string, id: number) {
       await deletePageById(pageName, id);
-      this.fetchPageListAction(pageName, formData);
+      this.fetchPageListAction(pageName, { offset: 0, size: 6 });
+    },
+    // 创建
+    async fetchCreatePageAction(pageName: string, formData: any) {
+      await postCreatePage(pageName, formData);
+      this.fetchPageListAction(pageName, { offset: 0, size: 6 });
+    },
+    // 修改
+    async fetchEditPageAction(pageName: string, id: IdType, formData: any) {
+      console.log(formData);
+      await patchPageById(pageName, id, formData);
+      this.fetchPageListAction(pageName, { offset: 0, size: 6 });
     }
   }
 });

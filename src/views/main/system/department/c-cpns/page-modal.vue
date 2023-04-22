@@ -13,29 +13,12 @@
         <el-form-item prop="name" label="部门名称">
           <el-input v-model="formData.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item prop="realname" label="部门领导">
-          <el-input v-model="formData.realname" autocomplete="off" />
+        <el-form-item prop="leader" label="领导名称">
+          <el-input v-model="formData.leader" autocomplete="off" />
         </el-form-item>
-        <el-form-item prop="password" label="密码" v-show="!isEditForm">
-          <el-input
-            show-password
-            v-model="formData.password"
-            autocomplete="off"
-          />
-        </el-form-item>
-        <el-form-item prop="cellphone" label="手机号码">
-          <el-input v-model="formData.cellphone" autocomplete="off" />
-        </el-form-item>
-        <el-form-item prop="roleId" label="选择角色">
-          <el-select v-model="formData.roleId" style="width: 100%">
-            <template v-for="item in entireRoles" :key="item.id">
-              <el-option :label="item.name" :value="item.id" />
-            </template>
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="departmentId" label="选择部门">
-          <el-select v-model="formData.departmentId" style="width: 100%">
-            <template v-for="item in entireDepartment" :key="item.id">
+        <el-form-item prop="parentId" label="选择部门">
+          <el-select v-model="formData.parentId" style="width: 100%">
+            <template v-for="item in pageList" :key="item.id">
               <el-option :label="item.name" :value="item.id" /> </template
           ></el-select>
         </el-form-item>
@@ -51,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import useLoginStore from "@/store/module/login";
 import useSystemStore from "@/store/module/system";
 import type { ElForm } from "element-plus";
 import { storeToRefs } from "pinia";
@@ -60,30 +42,25 @@ import { ref } from "vue";
 const elFormRef = ref<InstanceType<typeof ElForm>>();
 const formData = reactive<any>({
   name: "",
-  realname: "",
-  password: "",
-  cellphone: "",
-  roleId: "",
-  departmentId: ""
+  leader: "",
+  parentId: ""
 });
 const isShowModal = ref(false);
 const systemStore = useSystemStore();
-const loginStore = useLoginStore();
-const { entireDepartment, entireRoles } = storeToRefs(loginStore);
-
+const { pageList } = storeToRefs(systemStore);
 const isEditForm = ref(false);
 const editFromData = ref<any>({});
 // 点击确定后执行的函数
 function onSubmitClick() {
-  // console.log(isEditForm, editFromData);
+  isShowModal.value = false;
   if (isEditForm.value && editFromData.value) {
-    console.log(editFromData.value.id, formData);
-    const { name, realname, password, cellphone, departmentId, roleId } =
-      formData;
-    const info = { name, realname, password, cellphone, departmentId, roleId };
-    systemStore.fetchEditUser(editFromData.value.id, info);
+    systemStore.fetchEditPageAction(
+      "department",
+      editFromData.value.id,
+      formData
+    );
   } else {
-    systemStore.fetchCreateNewUser(formData);
+    systemStore.fetchCreatePageAction("department", formData);
   }
 }
 function onCancelClick() {
@@ -92,9 +69,11 @@ function onCancelClick() {
 // 新建或者编辑后弹出
 function setShowModal(itemData?: any, isEdit = false) {
   isShowModal.value = true;
+
   if (isEdit && itemData) {
-    console.log(isEdit, itemData);
     for (const key in itemData) {
+      // console.log(key);
+      if (key === "createAt" || key === "updateAt") continue;
       formData[key] = itemData[key];
     }
     isEditForm.value = true;
