@@ -1,8 +1,8 @@
 <template>
   <div class="user">
     <user-search @resetForm="handlerResetForm" @queryForm="handlerQueryForm" />
-    <user-content ref="useContentRef" />
-    <user-modal />
+    <user-content @createNewUser="handlerNewUser" ref="useContentRef" />
+    <user-modal ref="userModalRef" />
   </div>
 </template>
 
@@ -12,12 +12,16 @@ import userContent from "./c-cpns/user-content.vue";
 import userModal from "./c-cpns/user-modal.vue";
 import { ref } from "vue";
 const useContentRef = ref<InstanceType<typeof userContent>>();
+const userModalRef = ref<InstanceType<typeof userModal>>();
 function handlerResetForm() {
   useContentRef.value?.fetchUserListData();
 }
 function handlerQueryForm(searchForm: object) {
   // console.log(searchForm);
   useContentRef.value?.fetchUserListData(searchForm);
+}
+function handlerNewUser() {
+  userModalRef.value?.setShowModal();
 }
 </script>
 

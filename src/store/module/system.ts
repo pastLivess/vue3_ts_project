@@ -1,6 +1,7 @@
 import {
   deleteUserById,
   postDepartmentData,
+  postNewUser,
   postRoleData,
   postUserListData
 } from "@/service/modules/system";
@@ -35,6 +36,10 @@ const useSystemStore = defineStore("system", {
       this.entireDepartment = departmentRes.data.list;
       this.entireRoles = roleRes.data.list;
       // console.log(departmentRes, roleRes);
+    },
+    // 创建新用户
+    async fetchCreateNewUser(formData: object) {
+      await postNewUser(formData);
     }
   }
 });

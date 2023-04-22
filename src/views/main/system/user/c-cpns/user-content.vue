@@ -2,7 +2,12 @@
   <div class="user-content">
     <div class="header">
       <div class="title">用户列表</div>
-      <el-button style="height: 32px" size="large" type="primary">
+      <el-button
+        @click="createNewUser"
+        style="height: 32px"
+        size="large"
+        type="primary"
+      >
         新建用户
       </el-button>
     </div>
@@ -117,6 +122,10 @@ function fetchUserListData(formData = {}) {
 function handlerEdit() {}
 function handlerDelete(id: IdType) {
   systemStore.fetchDeleteUserAction(id);
+}
+const emits = defineEmits(["createNewUser"]);
+function createNewUser() {
+  emits("createNewUser");
 }
 defineExpose({
   fetchUserListData

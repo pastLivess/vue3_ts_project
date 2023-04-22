@@ -34,3 +34,10 @@ export function postRoleData() {
     }
   });
 }
+// 创建用户
+export function postNewUser(formData: object) {
+  return hyRequest.post({
+    url: "/users",
+    data: formData
+  });
+}
