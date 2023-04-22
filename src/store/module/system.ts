@@ -2,6 +2,7 @@ import {
   deleteUserById,
   patchUserById,
   postNewUser,
+  postPageListData,
   postUserListData
 } from "@/service/modules/system";
 import { defineStore } from "pinia";
@@ -11,7 +12,9 @@ import type { IdType } from "@/types";
 const useSystemStore = defineStore("system", {
   state: (): ISystemStore => ({
     userList: [],
-    userTotalCount: 0
+    userTotalCount: 0,
+    pageList: [],
+    pageTotalCount: 0
   }),
   actions: {
     async fetchUserListAction(formData: object) {
@@ -29,7 +32,6 @@ const useSystemStore = defineStore("system", {
       await deleteUserById(id);
       this.fetchUserListAction({ offset: 0, size: 6 });
     },
-
     // 创建新用户
     async fetchCreateNewUser(formData: object) {
       await postNewUser(formData);
@@ -39,6 +41,12 @@ const useSystemStore = defineStore("system", {
     async fetchEditUser(id: IdType, formData: object) {
       await patchUserById(id, formData);
       this.fetchUserListAction({ offset: 0, size: 6 });
+    },
+    async fetchPageListAction(pageName: string, formData: object) {
+      const pageListRes = await postPageListData(pageName, formData);
+      const { totalCount, list } = pageListRes.data;
+      this.pageList = list;
+      this.pageTotalCount = totalCount;
     }
   }
 });

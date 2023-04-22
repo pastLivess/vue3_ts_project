@@ -24,6 +24,13 @@ export function postDepartmentData() {
     }
   });
 }
+// 创建部门
+export function postCreateDepartment(formData: object) {
+  return hyRequest.post({
+    url: "/department",
+    data: formData
+  });
+}
 // 获取角色数据
 export function postRoleData() {
   return hyRequest.post({
@@ -45,6 +52,14 @@ export function postNewUser(formData: object) {
 export function patchUserById(id: IdType, formData: object) {
   return hyRequest.patch({
     url: `/users/${id}`,
+    data: formData
+  });
+}
+
+// 针对全部页面重构的网络请求
+export function postPageListData(pageName: string, formData: object) {
+  return hyRequest.post({
+    url: `/${pageName}/list`,
     data: formData
   });
 }

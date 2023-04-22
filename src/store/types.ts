@@ -13,4 +13,6 @@ export interface IUser {
 export interface ISystemStore {
   userList: IUser[];
   userTotalCount: number;
+  pageList: any[];
+  pageTotalCount: number;
 }

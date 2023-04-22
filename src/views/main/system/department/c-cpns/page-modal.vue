@@ -3,17 +3,17 @@
     <el-dialog
       center
       width="35%"
-      :title="!isEditForm ? '新建用户' : '编辑用户'"
+      :title="!isEditForm ? '新建部门' : '编辑部门'"
       :model-value="isShowModal"
       :close-on-click-modal="false"
       :show-close="false"
       :close-on-press-escape="false"
     >
       <el-form :model="formData" ref="elFormRef" label-width="100px">
-        <el-form-item prop="name" label="用户名">
+        <el-form-item prop="name" label="部门名称">
           <el-input v-model="formData.name" autocomplete="off" />
         </el-form-item>
-        <el-form-item prop="realname" label="真实姓名">
+        <el-form-item prop="realname" label="部门领导">
           <el-input v-model="formData.realname" autocomplete="off" />
         </el-form-item>
         <el-form-item prop="password" label="密码" v-show="!isEditForm">
