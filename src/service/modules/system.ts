@@ -41,3 +41,10 @@ export function postNewUser(formData: object) {
     data: formData
   });
 }
+// 编辑用户
+export function patchUserById(id: IdType, formData: object) {
+  return hyRequest.patch({
+    url: `/users/${id}`,
+    data: formData
+  });
+}

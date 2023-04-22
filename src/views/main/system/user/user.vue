@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <user-search @resetForm="handlerResetForm" @queryForm="handlerQueryForm" />
-    <user-content @createNewUser="handlerNewUser" ref="useContentRef" />
+    <user-content @createEditUser="handlerNewEditUser" ref="useContentRef" />
     <user-modal ref="userModalRef" />
   </div>
 </template>
@@ -20,8 +20,8 @@ function handlerQueryForm(searchForm: object) {
   // console.log(searchForm);
   useContentRef.value?.fetchUserListData(searchForm);
 }
-function handlerNewUser() {
-  userModalRef.value?.setShowModal();
+function handlerNewEditUser(currentEditUser: object) {
+  userModalRef.value?.setShowModal(currentEditUser, true);
 }
 </script>
 

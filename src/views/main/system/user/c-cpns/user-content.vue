@@ -63,7 +63,7 @@
         <el-table-column align="center" prop="date" label="操作" width="200">
           <template #default="scope">
             <el-button
-              @click="handlerEdit"
+              @click="handlerEdit(scope.row)"
               text
               icon="edit"
               type="primary"
@@ -119,13 +119,16 @@ function fetchUserListData(formData = {}) {
   const info = { offset, size, ...formData };
   systemStore.fetchUserListAction(info);
 }
-function handlerEdit() {}
+const emits = defineEmits(["createEditUser"]);
+// 编辑用户
+function handlerEdit(currentEditUser: any) {
+  emits("createEditUser", currentEditUser);
+}
 function handlerDelete(id: IdType) {
   systemStore.fetchDeleteUserAction(id);
 }
-const emits = defineEmits(["createNewUser"]);
 function createNewUser() {
-  emits("createNewUser");
+  emits("createEditUser");
 }
 defineExpose({
   fetchUserListData

@@ -3,6 +3,7 @@ import {
   getUserInfoById,
   getUserMenuById
 } from "@/service/modules/login";
+import { postDepartmentData, postRoleData } from "@/service/modules/system";
 import { defineStore } from "pinia";
 import type { ICcount, IdType } from "@/types";
 import { localCache } from "@/utils/cache";
@@ -16,17 +17,38 @@ import {
 import { mapMenuToRoute } from "@/utils/map-menu-to-route";
 
 import router from "@/router";
+
+interface IDepartment {
+  createAt: string;
+  id: number;
+  leader: string;
+  name: string;
+  parentId: number;
+  updateAt: string;
+}
+interface IRoles {
+  createAt: string;
+  id: number;
+  intro: string;
+  menuList: any[];
+  name: string;
+  updateAt: string;
+}
 interface ILoginState {
   token: string;
   userInfo: any;
   userInfoMenus: any;
+  entireDepartment: IDepartment[];
+  entireRoles: IRoles[];
 }
 
 const useLoginStore = defineStore("login", {
   state: (): ILoginState => ({
     token: "",
     userInfo: {},
-    userInfoMenus: []
+    userInfoMenus: [],
+    entireDepartment: [],
+    entireRoles: []
   }),
   actions: {
     async loginAccountAction(account: ICcount) {
@@ -56,6 +78,7 @@ const useLoginStore = defineStore("login", {
         this.token = token;
         this.userInfo = userInfo;
         this.userInfoMenus = userInfoMenu;
+        this.fetchEntireDataAction();
       } // 根据权限映射路由的函数
       const routes = mapMenuToRoute(userInfoMenu);
       routes.forEach((route) => router.addRoute("main", route));
@@ -72,8 +95,15 @@ const useLoginStore = defineStore("login", {
     },
     async userInfoMenuAction(id: IdType) {
       return await getUserMenuById(id);
+    },
+    // 获取用户和部门
+    async fetchEntireDataAction() {
+      const departmentRes = await postDepartmentData();
+      const roleRes = await postRoleData();
+      this.entireDepartment = departmentRes.data.list;
+      this.entireRoles = roleRes.data.list;
+      // console.log(departmentRes, roleRes);
     }
-  },
-  getters: {}
+  }
 });
 export default useLoginStore;

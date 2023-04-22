@@ -1,8 +1,7 @@
 import {
   deleteUserById,
-  postDepartmentData,
+  patchUserById,
   postNewUser,
-  postRoleData,
   postUserListData
 } from "@/service/modules/system";
 import { defineStore } from "pinia";
@@ -12,34 +11,34 @@ import type { IdType } from "@/types";
 const useSystemStore = defineStore("system", {
   state: (): ISystemStore => ({
     userList: [],
-    userTotalCount: 0,
-    entireDepartment: [],
-    entireRoles: []
+    userTotalCount: 0
   }),
   actions: {
-    async fetchUserListAction(formData = { offset: 0, size: 6 }) {
-      const userListRes = await postUserListData(formData);
+    async fetchUserListAction(formData: object) {
+      const userListRes = await postUserListData({
+        offset: 0,
+        size: 6,
+        ...formData
+      });
       // console.log(formData);
       const { list, totalCount } = userListRes.data;
       this.userList = list;
       this.userTotalCount = totalCount;
-      this.fetchEntireDataAction();
     },
     async fetchDeleteUserAction(id: IdType) {
       await deleteUserById(id);
-      this.fetchUserListAction();
+      this.fetchUserListAction({ offset: 0, size: 6 });
     },
-    // 获取用户和部门
-    async fetchEntireDataAction() {
-      const departmentRes = await postDepartmentData();
-      const roleRes = await postRoleData();
-      this.entireDepartment = departmentRes.data.list;
-      this.entireRoles = roleRes.data.list;
-      // console.log(departmentRes, roleRes);
-    },
+
     // 创建新用户
     async fetchCreateNewUser(formData: object) {
       await postNewUser(formData);
+      this.fetchUserListAction({ offset: 0, size: 6 });
+    },
+    // 编辑用户
+    async fetchEditUser(id: IdType, formData: object) {
+      await patchUserById(id, formData);
+      this.fetchUserListAction({ offset: 0, size: 6 });
     }
   }
 });
