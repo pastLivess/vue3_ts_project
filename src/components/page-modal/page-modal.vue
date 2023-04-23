@@ -36,8 +36,8 @@
                 v-model="formData[item.prop]"
               >
                 <template v-for="option in item.options" :key="option.label">
-                  <el-option :label="option.label" :value="option.value">
-                    {{ option.label }}
+                  <el-option :label="option.name" :value="option.value">
+                    {{ option.name }}
                   </el-option>
                 </template>
               </el-select>
@@ -76,19 +76,20 @@ const props = defineProps<IModal>();
 
 const initialData: any = {};
 for (const item of props.modalConfig.propsList) {
-  initialData[item] = "";
+  initialData[item.prop] = "";
 }
 const elFormRef = ref<InstanceType<typeof ElForm>>();
 const formData = reactive<any>(initialData);
 const isShowModal = ref(false);
 const systemStore = useSystemStore();
-const { pageList } = storeToRefs(systemStore);
 const isEditForm = ref(false);
 const editFromData = ref<any>({});
 // 点击确定后执行的函数
 function onSubmitClick() {
   isShowModal.value = false;
   if (isEditForm.value && editFromData.value) {
+    // console.log(formData);
+
     systemStore.fetchEditPageAction(
       "department",
       editFromData.value.id,

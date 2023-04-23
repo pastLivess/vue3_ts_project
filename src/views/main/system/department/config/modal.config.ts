@@ -1,3 +1,5 @@
+type IOption = any[];
+
 const modalConfig = {
   header: {
     newTitle: "新建部门",
@@ -21,16 +23,7 @@ const modalConfig = {
       label: "上级领导",
       prop: "parentId",
       placeholder: "请输入上级领导",
-      options: [
-        {
-          label: "财务部",
-          value: "111"
-        },
-        {
-          label: "安保部",
-          value: "222"
-        }
-      ]
+      options: <IOption>[]
     }
   ]
 };
