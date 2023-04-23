@@ -20,6 +20,7 @@
                 <el-date-picker
                   v-model="searchForm[item.prop]"
                   type="daterange"
+                  range-separator="To"
                   start-placeholder="开始时间"
                   end-placeholder="结束时间"
                 ></el-date-picker>
