@@ -3,25 +3,47 @@
     <el-dialog
       center
       width="35%"
-      :title="!isEditForm ? '新建部门' : '编辑部门'"
+      :title="
+        !isEditForm ? modalConfig.header.newTitle : modalConfig.header.editTitle
+      "
       :model-value="isShowModal"
       :close-on-click-modal="false"
       :show-close="false"
       :close-on-press-escape="false"
     >
       <el-form :model="formData" ref="elFormRef" label-width="100px">
-        <el-form-item prop="name" label="部门名称">
-          <el-input v-model="formData.name" autocomplete="off" />
-        </el-form-item>
-        <el-form-item prop="leader" label="领导名称">
-          <el-input v-model="formData.leader" autocomplete="off" />
-        </el-form-item>
-        <el-form-item prop="parentId" label="选择部门">
-          <el-select v-model="formData.parentId" style="width: 100%">
-            <template v-for="item in pageList" :key="item.id">
-              <el-option :label="item.name" :value="item.id" /> </template
-          ></el-select>
-        </el-form-item>
+        <template v-for="item in modalConfig.propsList" :key="item.label">
+          <el-form-item :label="item.label" :prop="item.prop">
+            <template v-if="item.type === 'input'">
+              <el-input
+                v-model="formData[item.prop]"
+                :placeholder="item.placeholder"
+              ></el-input>
+            </template>
+            <template v-if="item.type === 'data-picker'">
+              <el-date-picker
+                type="daterange"
+                range-separator="-"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                v-model="formData[item.prop]"
+              ></el-date-picker>
+            </template>
+            <template v-if="item.type === 'select'">
+              <el-select
+                style="width: 100%"
+                :placeholder="item.placeholder"
+                v-model="formData[item.prop]"
+              >
+                <template v-for="option in item.options" :key="option.label">
+                  <el-option :label="option.label" :value="option.value">
+                    {{ option.label }}
+                  </el-option>
+                </template>
+              </el-select>
+            </template>
+          </el-form-item>
+        </template>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
@@ -39,12 +61,25 @@ import type { ElForm } from "element-plus";
 import { storeToRefs } from "pinia";
 import { reactive } from "vue";
 import { ref } from "vue";
+
+interface IModal {
+  modalConfig: {
+    header: {
+      newTitle: string;
+      editTitle: string;
+    };
+    propsList: any[];
+  };
+}
+
+const props = defineProps<IModal>();
+
+const initialData: any = {};
+for (const item of props.modalConfig.propsList) {
+  initialData[item] = "";
+}
 const elFormRef = ref<InstanceType<typeof ElForm>>();
-const formData = reactive<any>({
-  name: "",
-  leader: "",
-  parentId: ""
-});
+const formData = reactive<any>(initialData);
 const isShowModal = ref(false);
 const systemStore = useSystemStore();
 const { pageList } = storeToRefs(systemStore);
