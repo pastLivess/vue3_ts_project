@@ -83,6 +83,7 @@ import type { IdType } from "@/types";
 
 interface IProps {
   contentConfig: {
+    pageName: string;
     header?: {
       title?: string;
       btnTitle?: string;
@@ -108,7 +109,7 @@ function fetchPageListData(formData = {}) {
   const size = pageSize.value;
   const offset = (currentPage.value - 1) * size;
   const info = { offset, size, ...formData };
-  systemStore.fetchPageListAction("department", info);
+  systemStore.fetchPageListAction(props.contentConfig.pageName, info);
 }
 const emits = defineEmits(["createEditUser"]);
 // 编辑用户
@@ -116,7 +117,7 @@ function handlerEdit(currentEditUser: any) {
   emits("createEditUser", currentEditUser);
 }
 function handlerDelete(id: IdType) {
-  systemStore.fetchDeletePageAction("department", id);
+  systemStore.fetchDeletePageAction(props.contentConfig.pageName, id);
 }
 function createNewUser() {
   emits("createEditUser");
