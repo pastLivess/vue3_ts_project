@@ -73,6 +73,7 @@ interface IModal {
     };
     propsList: any[];
   };
+  otherInfo?: any;
 }
 
 const props = defineProps<IModal>();
@@ -90,14 +91,18 @@ const editFromData = ref<any>({});
 // 点击确定后执行的函数
 function onSubmitClick() {
   isShowModal.value = false;
+  let infoData = formData;
+  if (props.otherInfo) {
+    infoData = { ...infoData, ...props.otherInfo };
+  }
   if (isEditForm.value && editFromData.value) {
     systemStore.fetchEditPageAction(
       props.modalConfig.pageName,
       editFromData.value.id,
-      formData
+      infoData
     );
   } else {
-    systemStore.fetchCreatePageAction(props.modalConfig.pageName, formData);
+    systemStore.fetchCreatePageAction(props.modalConfig.pageName, infoData);
   }
   isEditForm.value = false;
 }
