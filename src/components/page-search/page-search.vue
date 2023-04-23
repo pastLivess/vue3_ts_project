@@ -25,6 +25,19 @@
                   end-placeholder="结束时间"
                 ></el-date-picker>
               </template>
+              <template v-if="item.type === 'select'">
+                <el-select
+                  :placeholder="item.placeholder"
+                  style="width: 100%"
+                  v-model="searchForm[item.prop]"
+                ></el-select>
+                <template v-for="option in item.options" :key="option.value">
+                  <el-option
+                    :label="option.label"
+                    :value="option.value"
+                  ></el-option>
+                </template>
+              </template>
             </el-form-item>
           </el-col>
         </template>
