@@ -24,18 +24,20 @@ const contentConfig = {
       align: "center"
     },
     {
-      type: "normal",
+      type: "custom",
       label: "部门领导",
       prop: "leader",
       width: "150px",
-      align: "center"
+      align: "center",
+      slotName: "leader"
     },
     {
-      type: "normal",
+      type: "custom",
       label: "上级部门",
       prop: "parentId",
       width: "150px",
-      align: "center"
+      align: "center",
+      slotName: "parent"
     },
     {
       type: "timer",

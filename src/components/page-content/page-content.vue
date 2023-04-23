@@ -22,7 +22,7 @@
             </el-table-column>
           </template>
           <template v-else-if="item.type === 'handler'">
-            <el-table-column v-bind="item.prop">
+            <el-table-column v-bind="item">
               <template #default="scope">
                 <el-button
                   @click="handlerEdit(scope.row)"
@@ -42,6 +42,17 @@
                 >
                   删除
                 </el-button>
+              </template>
+            </el-table-column>
+          </template>
+          <template v-else-if="item.type === 'custom'">
+            <el-table-column v-bind="item">
+              <template #default="scope">
+                <slot
+                  :name="item.slotName"
+                  v-bind="scope"
+                  :prop="item.prop"
+                ></slot>
               </template>
             </el-table-column>
           </template>

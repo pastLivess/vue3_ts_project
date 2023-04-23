@@ -9,7 +9,14 @@
       ref="pageContentRef"
       @createEditUser="handlerCreateEditPage"
       :content-config="contentConfig"
-    />
+    >
+      <template #leader="scope">
+        {{ scope.row[scope.prop] }}
+      </template>
+      <template #parent="scope">
+        {{ scope.row[scope.prop] }}
+      </template>
+    </page-content>
     <page-modal ref="pageModalRef" />
   </div>
 </template>
