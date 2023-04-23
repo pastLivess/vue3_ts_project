@@ -3,7 +3,11 @@ import {
   getUserInfoById,
   getUserMenuById
 } from "@/service/modules/login";
-import { postDepartmentData, postRoleData } from "@/service/modules/system";
+import {
+  postDepartmentData,
+  postEntireMenus,
+  postRoleData
+} from "@/service/modules/system";
 import { defineStore } from "pinia";
 import type { ICcount, IdType } from "@/types";
 import { localCache } from "@/utils/cache";
@@ -40,6 +44,7 @@ interface ILoginState {
   userInfoMenus: any;
   entireDepartment: IDepartment[];
   entireRoles: IRoles[];
+  entireMenus: any[];
 }
 
 const useLoginStore = defineStore("login", {
@@ -48,7 +53,8 @@ const useLoginStore = defineStore("login", {
     userInfo: {},
     userInfoMenus: [],
     entireDepartment: [],
-    entireRoles: []
+    entireRoles: [],
+    entireMenus: []
   }),
   actions: {
     async loginAccountAction(account: ICcount) {
@@ -79,6 +85,7 @@ const useLoginStore = defineStore("login", {
         this.userInfo = userInfo;
         this.userInfoMenus = userInfoMenu;
         this.fetchEntireDataAction();
+        this.fetchEntireMenusAction();
       } // 根据权限映射路由的函数
       const routes = mapMenuToRoute(userInfoMenu);
       routes.forEach((route) => router.addRoute("main", route));
@@ -103,6 +110,13 @@ const useLoginStore = defineStore("login", {
       this.entireDepartment = departmentRes.data.list;
       this.entireRoles = roleRes.data.list;
       // console.log(departmentRes, roleRes);
+    },
+    // 获取完整菜单
+    async fetchEntireMenusAction() {
+      const entireMenusRes = await postEntireMenus();
+      // console.log(entireMenusRes);
+
+      this.entireMenus = entireMenusRes.data.list;
     }
   }
 });

@@ -81,3 +81,10 @@ export function patchPageById(pageName: string, id: IdType, formData: object) {
     data: formData
   });
 }
+
+// 完整的菜单
+export function postEntireMenus() {
+  return hyRequest.post({
+    url: "/menu/list"
+  });
+}
