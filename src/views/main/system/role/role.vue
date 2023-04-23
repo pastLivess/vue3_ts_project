@@ -11,7 +11,11 @@
       @newPage="handlerNewPage"
       :content-config="contentConfig"
     />
-    <page-modal ref="pageModalRef" :modal-config="modalConfig" />
+    <page-modal ref="pageModalRef" :modal-config="modalConfig">
+      <template #menulist>
+        <span>菜单列表</span>
+      </template>
+    </page-modal>
   </div>
 </template>
 
