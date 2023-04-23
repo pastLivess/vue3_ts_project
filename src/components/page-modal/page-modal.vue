@@ -58,12 +58,12 @@
 <script setup lang="ts">
 import useSystemStore from "@/store/module/system";
 import type { ElForm } from "element-plus";
-import { storeToRefs } from "pinia";
 import { reactive } from "vue";
 import { ref } from "vue";
 
 interface IModal {
   modalConfig: {
+    pageName: string;
     header: {
       newTitle: string;
       editTitle: string;
@@ -91,12 +91,12 @@ function onSubmitClick() {
     // console.log(formData);
 
     systemStore.fetchEditPageAction(
-      "department",
+      props.modalConfig.pageName,
       editFromData.value.id,
       formData
     );
   } else {
-    systemStore.fetchCreatePageAction("department", formData);
+    systemStore.fetchCreatePageAction(props.modalConfig.pageName, formData);
   }
 }
 function onCancelClick() {

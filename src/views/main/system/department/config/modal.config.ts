@@ -1,6 +1,7 @@
 type IOption = any[];
 
 const modalConfig = {
+  pageName: "department",
   header: {
     newTitle: "新建部门",
     editTitle: "编辑部门"
