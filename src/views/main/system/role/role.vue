@@ -18,6 +18,7 @@
     >
       <template #menulist>
         <el-tree
+          ref="treeRef"
           :data="entireMenus"
           node-key="id"
           show-checkbox
@@ -36,15 +37,27 @@ import modalConfig from "./config/modal.config";
 import usePageContent from "@/hook/usePageContent";
 import usePageModal from "@/hook/usePageModal";
 import useLoginStore from "@/store/module/login";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
+import type { ElTree } from "element-plus";
+import { mapMenuListToIds } from "@/utils/map-menulist-to-id";
 const { pageContentRef, handlerQueryForm, handlerResetForm } = usePageContent();
-const { pageModalRef, handlerNewPage, handlerEditPage } = usePageModal();
+const { pageModalRef, handlerNewPage, handlerEditPage } =
+  usePageModal(editCallBack);
 const loginStore = useLoginStore();
 const { entireMenus } = loginStore;
 const otherInfo = ref({});
-function handlerElTreeClick(data1: any, data2: any) {
+const treeRef = ref<InstanceType<typeof ElTree>>();
+function handlerElTreeClick(_: any, data2: any) {
   const menuList = [...data2.checkedKeys, ...data2.halfCheckedKeys];
   otherInfo.value = { menuList };
+}
+function editCallBack(itemData: any) {
+  const menuIds = mapMenuListToIds(itemData.menuList);
+  // console.log(menuIds);
+
+  nextTick(() => {
+    treeRef.value?.setCheckedKeys(menuIds);
+  });
 }
 </script>
 
