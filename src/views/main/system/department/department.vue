@@ -7,7 +7,8 @@
     />
     <page-content
       ref="pageContentRef"
-      @createEditUser="handlerCreateEditPage"
+      @editPage="handlerEditPage"
+      @newPage="handlerNewPage"
       :content-config="contentConfig"
     >
       <template #leader="scope">
@@ -28,36 +29,22 @@ import pageModal from "../../../../components/page-modal/page-modal.vue";
 import searchConfig from "./config/search.config";
 import contentConfig from "./config/content.config";
 import modalConfig from "./config/modal.config";
-import { ref } from "vue";
 import { computed } from "vue";
 import useLoginStore from "@/store/module/login";
-const pageContentRef = ref<InstanceType<typeof pageContent>>();
-const pageModalRef = ref<InstanceType<typeof pageModal>>();
+import usePageContent from "@/hook/usePageContent";
+import usePageModal from "@/hook/usePageModal";
 const loginStore = useLoginStore();
 const wrapperModalConfig = computed(() => {
   const departments = loginStore.entireDepartment.map((item) => {
     return { name: item.name, value: item.id };
   });
-
   modalConfig.propsList.forEach((item) => {
     if (item.prop === "parentId") [item.options?.push(...departments)];
   });
   return modalConfig;
 });
-// console.log(wrapperModalConfig);
-
-function handlerQueryForm(queryInfo: any) {
-  console.log(queryInfo);
-
-  pageContentRef.value?.fetchPageListData(queryInfo);
-}
-function handlerResetForm() {
-  pageContentRef.value?.fetchPageListData();
-}
-// 新建与删除
-function handlerCreateEditPage(queryInfo: any) {
-  pageModalRef.value?.setShowModal(queryInfo, true);
-}
+const { pageContentRef, handlerQueryForm, handlerResetForm } = usePageContent();
+const { pageModalRef, handlerNewPage, handlerEditPage } = usePageModal();
 </script>
 
 <style scoped lang="less"></style>

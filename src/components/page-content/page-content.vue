@@ -111,17 +111,21 @@ function fetchPageListData(formData = {}) {
   const info = { offset, size, ...formData };
   systemStore.fetchPageListAction(props.contentConfig.pageName, info);
 }
-const emits = defineEmits(["createEditUser"]);
+const emits = defineEmits(["editPage", "newPage"]);
 // 编辑用户
-function handlerEdit(currentEditUser: any) {
-  emits("createEditUser", currentEditUser);
-}
+
 function handlerDelete(id: IdType) {
   systemStore.fetchDeletePageAction(props.contentConfig.pageName, id);
 }
-function createNewUser() {
-  emits("createEditUser");
+function handlerEdit(currentEditUser: any) {
+  console.log(currentEditUser);
+
+  emits("editPage", currentEditUser);
 }
+function createNewUser() {
+  emits("newPage");
+}
+
 defineExpose({
   fetchPageListData
 });

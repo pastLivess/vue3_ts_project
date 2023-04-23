@@ -88,8 +88,6 @@ const editFromData = ref<any>({});
 function onSubmitClick() {
   isShowModal.value = false;
   if (isEditForm.value && editFromData.value) {
-    // console.log(formData);
-
     systemStore.fetchEditPageAction(
       props.modalConfig.pageName,
       editFromData.value.id,
@@ -98,9 +96,11 @@ function onSubmitClick() {
   } else {
     systemStore.fetchCreatePageAction(props.modalConfig.pageName, formData);
   }
+  isEditForm.value = false;
 }
 function onCancelClick() {
   isShowModal.value = false;
+  isEditForm.value = false;
 }
 // 新建或者编辑后弹出
 function setShowModal(itemData?: any, isEdit = false) {
@@ -108,17 +108,15 @@ function setShowModal(itemData?: any, isEdit = false) {
 
   if (isEdit && itemData) {
     for (const key in itemData) {
-      // console.log(key);
-      if (key === "createAt" || key === "updateAt") continue;
       formData[key] = itemData[key];
     }
     isEditForm.value = true;
     editFromData.value = itemData;
   } else {
-    isEditForm.value = false;
     for (const key in formData) {
       formData[key] = "";
     }
+    isEditForm.value = false;
     editFromData.value = null;
   }
 }
