@@ -8,6 +8,7 @@
     <page-content
       ref="pageContentRef"
       @createEditUser="handlerCreateEditPage"
+      :content-config="contentConfig"
     />
     <page-modal ref="pageModalRef" />
   </div>
@@ -18,6 +19,7 @@ import pageSearch from "../../../../components/page-search/page-search.vue";
 import pageContent from "../../../../components/page-content/page-content.vue";
 import pageModal from "../../../../components/page-modal/page-modal.vue";
 import searchConfig from "./config/search.config";
+import contentConfig from "./config/content.config";
 import { ref } from "vue";
 const pageContentRef = ref<InstanceType<typeof pageContent>>();
 const pageModalRef = ref<InstanceType<typeof pageModal>>();
