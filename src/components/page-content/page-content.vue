@@ -3,6 +3,7 @@
     <div class="header">
       <div class="title">{{ contentConfig.header?.title ?? "数据列表" }}</div>
       <el-button
+        v-if="isCreate"
         @click="createNewUser"
         style="height: 32px"
         size="large"
@@ -27,9 +28,10 @@
             </el-table-column>
           </template>
           <template v-else-if="item.type === 'handler'">
-            <el-table-column v-bind="item">
+            <el-table-column v-bind="item" v-if="isDelete && isUpdate">
               <template #default="scope">
                 <el-button
+                  v-if="isUpdate"
                   @click="handlerEdit(scope.row)"
                   text
                   icon="edit"
@@ -39,6 +41,7 @@
                   编辑
                 </el-button>
                 <el-button
+                  v-if="isDelete"
                   @click="handlerDelete(scope.row.id)"
                   text
                   icon="delete"
@@ -85,6 +88,7 @@ import { storeToRefs } from "pinia";
 import { formatUTC } from "@/utils/format";
 import { ref } from "vue";
 import type { IdType } from "@/types";
+import usePermissions from "@/hook/usePermissions";
 
 interface IProps {
   contentConfig: {
@@ -98,12 +102,15 @@ interface IProps {
   };
 }
 const props = defineProps<IProps>();
-
+// 用户按钮权限
 const systemStore = useSystemStore();
 const { pageList, pageTotalCount } = storeToRefs(systemStore);
 const pageSize = ref(6);
 const currentPage = ref(1);
-
+const isCreate = usePermissions(`${props.contentConfig.pageName}:create`);
+const isDelete = usePermissions(`${props.contentConfig.pageName}:create`);
+const isUpdate = usePermissions(`${props.contentConfig.pageName}:create`);
+const isQuery = usePermissions(`${props.contentConfig.pageName}:create`);
 fetchPageListData();
 function handleSizeChange() {
   fetchPageListData();
@@ -112,13 +119,13 @@ function handleCurrentChange() {
   fetchPageListData();
 }
 function fetchPageListData(formData = {}) {
+  if (!isQuery) return;
   const size = pageSize.value;
   const offset = (currentPage.value - 1) * size;
   const info = { offset, size, ...formData };
   systemStore.fetchPageListAction(props.contentConfig.pageName, info);
 }
 const emits = defineEmits(["editPage", "newPage"]);
-// 编辑用户
 
 function handlerDelete(id: IdType) {
   systemStore.fetchDeletePageAction(props.contentConfig.pageName, id);

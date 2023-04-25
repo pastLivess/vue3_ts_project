@@ -1,5 +1,5 @@
 <template>
-  <div class="user-search">
+  <div class="user-search" v-if="isQuery">
     <el-form
       ref="elFormRef"
       :model="searchForm"
@@ -64,13 +64,16 @@
 import type { ElForm } from "element-plus";
 import { ref } from "vue";
 import { reactive } from "vue";
+import usePermissions from "@/hook/usePermissions";
 interface IProps {
   searchConfig: {
+    pageName: string;
     formItems: any[];
   };
 }
 const props = defineProps<IProps>();
 
+const isQuery = usePermissions(`${props.searchConfig.pageName}:create`);
 const initialForm: any = {};
 
 for (const item of props.searchConfig.formItems) {
