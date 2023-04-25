@@ -21,6 +21,7 @@ import {
 import { mapMenuToRoute } from "@/utils/map-menu-to-route";
 
 import router from "@/router";
+import { mapMenuListToPermissions } from "@/utils/map-menulist-to-permissions";
 
 interface IDepartment {
   createAt: string;
@@ -45,6 +46,7 @@ interface ILoginState {
   entireDepartment: IDepartment[];
   entireRoles: IRoles[];
   entireMenus: any[];
+  permissions: string[];
 }
 
 const useLoginStore = defineStore("login", {
@@ -54,7 +56,8 @@ const useLoginStore = defineStore("login", {
     userInfoMenus: [],
     entireDepartment: [],
     entireRoles: [],
-    entireMenus: []
+    entireMenus: [],
+    permissions: []
   }),
   actions: {
     async loginAccountAction(account: ICcount) {
@@ -86,7 +89,13 @@ const useLoginStore = defineStore("login", {
         this.userInfoMenus = userInfoMenu;
         this.fetchEntireDataAction();
         this.fetchEntireMenusAction();
-      } // 根据权限映射路由的函数
+      }
+      // 映射菜单的权限控制
+      const permissions = mapMenuListToPermissions(userInfoMenu);
+      this.permissions = permissions;
+      console.log(permissions);
+
+      // 根据权限映射路由的函数
       const routes = mapMenuToRoute(userInfoMenu);
       routes.forEach((route) => router.addRoute("main", route));
     },
