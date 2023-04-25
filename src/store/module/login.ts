@@ -62,14 +62,16 @@ const useLoginStore = defineStore("login", {
   actions: {
     async loginAccountAction(account: ICcount) {
       const loginRes = await accountLoginRequest(account);
+      console.log(loginRes);
 
       const { id, name, token } = loginRes.data;
       this.token = token;
-      localCache.setCache(CACHE_TOKEN, this.token);
+      localCache.setCache(CACHE_TOKEN, token);
       localCache.setCache(CACHE_USERNAME, name);
       // 获取用户信息与菜单(权限菜单)
       const userInfoRes = await this.userInfoAction(id);
       const userinfoMenuRes = await this.userInfoMenuAction(id);
+      console.log(userinfoMenuRes);
 
       this.userInfo = userInfoRes.data;
       this.userInfoMenus = userinfoMenuRes.data;

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-search">
+  <div class="user-search" v-if="isQuery">
     <el-form
       ref="elFormRef"
       :model="searchForm"
@@ -81,7 +81,7 @@
 import type { ElForm } from "element-plus";
 import { ref } from "vue";
 import { reactive } from "vue";
-
+import usePermissions from "@/hook/usePermissions";
 const searchForm = reactive({
   name: "",
   realname: "",
@@ -89,6 +89,7 @@ const searchForm = reactive({
   enable: 1,
   createAt: ""
 });
+const isQuery = usePermissions(`users:query`);
 const emits = defineEmits(["resetForm", "queryForm"]);
 const elFormRef = ref<InstanceType<typeof ElForm>>();
 function handlerResetForm() {

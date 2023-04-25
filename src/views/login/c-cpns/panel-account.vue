@@ -45,8 +45,8 @@ const accountRules: FormRules = {
       trigger: "blur"
     },
     {
-      pattern: /^[a-z0-9A-Z]{6,20}$/,
-      message: "必须是6~20位数字或字母组成",
+      pattern: /^[a-z0-9A-Z]{4,20}$/,
+      message: "必须是4~20位数字或字母组成",
       trigger: "blur"
     }
   ],

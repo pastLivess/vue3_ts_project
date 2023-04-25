@@ -3,6 +3,7 @@
     <div class="header">
       <div class="title">用户列表</div>
       <el-button
+        v-if="isCreate"
         @click="createNewUser"
         style="height: 32px"
         size="large"
@@ -63,6 +64,7 @@
         <el-table-column align="center" prop="date" label="操作" width="200">
           <template #default="scope">
             <el-button
+              v-if="isUpdate"
               @click="handlerEdit(scope.row)"
               text
               icon="edit"
@@ -72,6 +74,7 @@
               编辑
             </el-button>
             <el-button
+              v-if="isDelete"
               @click="handlerDelete(scope.row.id)"
               text
               icon="delete"
@@ -98,6 +101,7 @@
 
 <script setup lang="ts">
 import useSystemStore from "@/store/module/system";
+import usePermissions from "@/hook/usePermissions";
 import { storeToRefs } from "pinia";
 import { formatUTC } from "@/utils/format";
 import { ref } from "vue";
@@ -106,6 +110,11 @@ const systemStore = useSystemStore();
 const { userList, userTotalCount } = storeToRefs(systemStore);
 const pageSize = ref(6);
 const currentPage = ref(1);
+// 用户权限判断
+const isCreate = usePermissions("users:create");
+const isDelete = usePermissions("user:delete");
+const isUpdate = usePermissions("users:update");
+const isQuery = usePermissions("users:query");
 fetchUserListData();
 function handleSizeChange() {
   fetchUserListData();
@@ -114,6 +123,7 @@ function handleCurrentChange() {
   fetchUserListData();
 }
 function fetchUserListData(formData = {}) {
+  if (!isQuery) return;
   const size = pageSize.value;
   const offset = (currentPage.value - 1) * size;
   const info = { offset, size, ...formData };

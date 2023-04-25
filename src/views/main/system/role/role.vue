@@ -41,8 +41,10 @@ import { ref, nextTick } from "vue";
 import type { ElTree } from "element-plus";
 import { mapMenuListToIds } from "@/utils/map-menulist-to-id";
 const { pageContentRef, handlerQueryForm, handlerResetForm } = usePageContent();
-const { pageModalRef, handlerNewPage, handlerEditPage } =
-  usePageModal(editCallBack);
+const { pageModalRef, handlerNewPage, handlerEditPage } = usePageModal(
+  newCallBack,
+  editCallBack
+);
 const loginStore = useLoginStore();
 const { entireMenus } = loginStore;
 const otherInfo = ref({});
@@ -54,9 +56,13 @@ function handlerElTreeClick(_: any, data2: any) {
 function editCallBack(itemData: any) {
   const menuIds = mapMenuListToIds(itemData.menuList);
   // console.log(menuIds);
-
   nextTick(() => {
     treeRef.value?.setCheckedKeys(menuIds);
+  });
+}
+function newCallBack() {
+  nextTick(() => {
+    treeRef.value?.setCheckedKeys([]);
   });
 }
 </script>
