@@ -112,7 +112,7 @@ const pageSize = ref(6);
 const currentPage = ref(1);
 // 用户权限判断
 const isCreate = usePermissions("users:create");
-const isDelete = usePermissions("user:delete");
+const isDelete = usePermissions("users:delete");
 const isUpdate = usePermissions("users:update");
 const isQuery = usePermissions("users:query");
 fetchUserListData();

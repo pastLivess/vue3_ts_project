@@ -111,6 +111,17 @@ const isCreate = usePermissions(`${props.contentConfig.pageName}:create`);
 const isDelete = usePermissions(`${props.contentConfig.pageName}:create`);
 const isUpdate = usePermissions(`${props.contentConfig.pageName}:create`);
 const isQuery = usePermissions(`${props.contentConfig.pageName}:create`);
+systemStore.$onAction(({ name, after }) => {
+  if (
+    name === "fetchDeletePageAction" ||
+    name === "fetchEditPageAction" ||
+    name === "fetchCreateNewUser"
+  )
+    // after会在回调成功时才会执行
+    after(() => {
+      currentPage.value = 1;
+    });
+});
 fetchPageListData();
 function handleSizeChange() {
   fetchPageListData();
