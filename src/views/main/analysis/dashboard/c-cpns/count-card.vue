@@ -7,29 +7,44 @@
       </el-tooltip>
     </div>
     <div class="content">
-      <div class="count">{{ count1 }}</div>
+      <div class="count" ref="count1Ref">{{ count1 }}</div>
     </div>
     <div class="footer">
       <span>{{ subtitle }}</span>
-      <span>{{ count2 }}</span>
+      <span ref="count2Ref">{{ count2 }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { CountUp } from "countup.js";
+import { ref, onMounted } from "vue";
+
 interface IProps {
+  amount?: string;
   title?: string;
   tips?: string;
   subtitle?: string;
   count1?: number;
   count2?: number;
 }
-withDefaults(defineProps<IProps>(), {
+const props = withDefaults(defineProps<IProps>(), {
   title: "商品总数量",
   tips: "所有商品总销售额",
   subtitle: "商品总数量",
   count1: 509989,
   count2: 50989
+});
+const count1Ref = ref<HTMLElement>();
+const count2Ref = ref<HTMLElement>();
+onMounted(() => {
+  const countOptions = {
+    prefix: props.amount === "saleroom" ? "¥" : ""
+  };
+  const countup1 = new CountUp(count1Ref.value!, props.count1, countOptions);
+  const countup2 = new CountUp(count2Ref.value!, props.count2, countOptions);
+  countup1.start();
+  countup2.start();
 });
 </script>
 
